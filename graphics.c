@@ -3,38 +3,39 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-const char *basic1[3] = {"*","*","*"};
-const char *basic2[3] = {"#","#","#"};
-const char *basic3[3] = {":",":",":"};
-const char *basic4[3] = {"~","~","~"};
-const char *mosaic1[3] = {"]", "[]", "["};
-const char *mosaic2[3] = {"\\","|","/"};
-const char *mosaic3[3] = {")","|","("};
-const char *mosaic4[3] = {">","|","<"};
+char basic1[3] = {'*', '*', '*'};
+char *basic2[3] = {"#","#","#"};
+char *basic3[3] = {":",":",":"};
+char *basic4[3] = {"~","~","~"};
+char *mosaic1[3] = {"]", "[]", "["};
+char *mosaic2[3] = {"\\","|","/"};
+char *mosaic3[3] = {")","|","("};
+char *mosaic4[3] = {">","|","<"};
 
-int size = 13;
-bool contact = true;
-bool revert = false;
+// 1: true, 2: false
+int size = 2;
+int contact = 1;
+int revert = 0;
 int gap = 1;
 
-bool border = true;
+int border = 1;
 char *border_char = "|";
 char *border_title = "graphics.c";
 
-// if (1) {
-//     printf("SIZE=%s\n", debug ? "true" : "false");
-//     printf("GAP=%d\n", gap);
-//     printf("BORDER=%s\n", border ? "true" : "false");
-//     if (border) {
-//         printf("BORDER_CHAR='%s'\n", border_char);
-//         printf("BORDER_TITLE='%s'\n", border_title);
-//     }
-// }
+int debug = 1;
 
 void repeat(char c , int count, bool title) {
-     for (int i = 0; i<count ;i++){
-        printf("%c", c);
+    int counter = 0;
+    char *out = "";
+
+    for (int i = 0; i < count ;i++) {
+        out += c;
+        for (int j; border_title[j]; j++) {
+            counter++;
+            out[counter] = j;
+        }
     }
+    printf("%c", c);
 }
 
 char *times(char *init, char *extra, int count) {
@@ -54,14 +55,27 @@ char *times(char *init, char *extra, int count) {
 
 int main(void) {
     int original_size = size;
-    int final_size = size;
     int alt_size = 0;
     gap+=1;
 
-    printf("%s", "+");
-    repeat('-', (size+gap)*2, true);
-    printf("%s", "+");
-    printf("\n");
+    if (debug == 1) {
+        printf("SIZE=%s\n", debug==1 ? "true" : "false");
+        printf("GAP=%d\n", gap);
+        printf("BORDER=%s\n", border==1 ? "true" : "false");
+        if (border == 1) {
+            printf("BORDER_CHAR='%s'\n", border_char);
+            printf("BORDER_TITLE='%s'\n", border_title);
+        }
+    }
+
+    if (border == 1) {
+        printf("%s", "+");
+        printf("%s", times("","-", (size+(gap*2)+size)));
+        printf("%s", "+");
+        printf("\n");
+    } else if (border == 0) {
+        border_char = "\0";
+    }
     
     for (int i = 0; i < size; i++) {
         original_size -= 1;
@@ -76,10 +90,12 @@ int main(void) {
         printf("%s%s%s%s%s\n", border_char, times("","*", size),times(""," ", (original_size+gap)*2), times("","*", size), border_char);
     }
 
-    int count2 = 0;
-    printf("%s", "+");
-    repeat('-', (final_size+gap)*2, false);
-    printf("%s", "+\n");
+    if (border == 1) {
+        printf("%s", "+");
+        printf("%s", times("","-", (alt_size+(gap*2)+alt_size)));
+        printf("%s", "+");
+        printf("\n");
+    }
 
     return 0;
 }

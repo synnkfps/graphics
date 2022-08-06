@@ -20,7 +20,7 @@ gap = 1
 
 border = True
 border_char = '|'
-border_title = 'graphics.c'
+border_title = 'graphics.py'
 
 debug = True
 

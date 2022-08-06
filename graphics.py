@@ -12,10 +12,12 @@ modes = {
 mode_name = 'mosaic4'
 mode = modes[mode_name]
 
-size = 15
+size = 7
 alt_size = size
-contact = True
+
+contact = False
 revert = False
+
 gap = 1
 
 border = True
@@ -25,45 +27,42 @@ border_title = 'graphics.py'
 debug = True
 
 if debug:
-    print(f'SIZE={size}')
-    print(f'GAP={gap}')
-    print(f'BORDER={str(border).upper()}')
+    print(
+f'''SIZE={size}
+GAP={gap}
+BORDER={str(border).upper()}''')
     if border:
         print(f'BORDER_CHAR="{border_char}"')
         if border_title != '':
             print(f'BORDER_TITLE="{border_title}"') 
+
 def main():            
     global gap
     global size
     global alt_size
 
-    check_border(size+(gap*2)+size, True)
-
     original_size = size
+
+    check_border(size+(gap*2)+size)
     for i in range(1, size+1):
         size -= 1
-        char = mode[0]
-        char2= mode[2]
-        if i == original_size and contact == False:
-            char = mode[1]
-            char2= mode[1]
-
-        print(border_char + char*i + ' '*((size+gap)*2) + char2*i + border_char)
+        char = mode[1] if i == original_size and contact == True else mode[0]
+        char2= mode[1] if i == original_size and contact == True else mode[2]
+        
+        print(f"{border_char}{char*i}{' '*(size+gap)*2}{char2*i}{border_char}")
+        
 
     for k in range(1, alt_size):
         alt_size -= 1
         size += 1
-        char = mode[2]
-        char2= mode[0]
-        if revert == False:
-            char = mode[0]
-            char2= mode[2]
+        char = mode[0] if revert == False else mode[2]
+        char2= mode[2] if revert == False else mode[0]
 
-        print(border_char + char*alt_size + ' '*((size+gap)*2) + char2*alt_size + border_char)
+        print(f"{border_char}{char*alt_size}{' '*(size+gap)*2}{char2*alt_size}{border_char}")
+        
+    check_border(gap)
 
-    check_border(gap, False)
-
-def check_border(n, title=bool):
+def check_border(n):
     global border_char
     window_up = []
     window_down=''

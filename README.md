@@ -6,6 +6,9 @@ the code may not be similar because in certain programming languages there is st
 
 or even iterating between two different types of variables at the same time, in this case i have iterated between a list and a string at the same time:
 ```py
+window_up = [] # list
+border_title = "" # string
+
 for i,j in zip(window_up, border_title):
   counter += 1
   window_up[counter] = j
